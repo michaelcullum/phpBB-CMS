@@ -1,0 +1,58 @@
+<div class="post bg2">
+	<div class="inner">
+		<span class="corners-top"><span></span></span>
+			<div class="left-box">
+				{L_PAGE_CREATED}: <strong>{PAGE_TIME}</strong> &bull; 
+				<!-- IF PAGE_LAST_MOD-->{L_PAGE_LAST_MOD}: <strong>{PAGE_LAST_MOD}</strong> &bull; <!-- ENDIF -->
+				{L_PAGE_VIEWS}: <strong>{PAGE_VIEWS}</strong>
+			</div>
+			<div class="right-box">
+				<!-- IF not S_IS_BOT -->
+					<ul class="linklist">
+					<!-- IF not S_USER_LOGGED_IN -->
+						<li><a href="{U_LOGIN_LOGOUT}" title="{L_LOGIN_LOGOUT}" accesskey="l">{L_LOGIN_LOGOUT}</a></li>
+					<!-- ENDIF -->
+					<!-- IF U_EDIT --><li><a href="{U_EDIT}">{L_EDIT}</a></li><!-- ENDIF -->
+					<!-- IF U_DELETE --><li><a href="{U_DELETE}">{L_DELETE}</a></li><!-- ENDIF -->
+					<!-- IF U_PRINT_PAGE --><li><a href="{U_PRINT_PAGE}" title="{L_PRINT}" accesskey="p" class="print">{L_PRINT}</a></li><!-- ENDIF -->
+					</ul>
+				<!-- ENDIF -->
+			</div>
+		<span class="corners-bottom"><span></span></span>
+	</div>
+</div>
+
+
+	<!-- INCLUDE cms_jumpbox.html -->
+	</div>
+
+<div id="page-footer">
+
+	<div class="navbar">
+		<div class="inner"><span class="corners-top"><span></span></span>
+
+		<ul class="linklist">
+			<li class="icon-home"><a href="{U_SITE_INDEX}" accesskey="h">{L_SITE_INDEX}</a></li>
+			<li class="rightside"><!-- IF U_TEAM --><a href="{U_TEAM}">{L_THE_TEAM}</a> &bull; <!-- ENDIF --><!-- IF not S_IS_BOT --><a href="{U_DELETE_COOKIES}">{L_DELETE_COOKIES}</a> &bull; <!-- ENDIF -->{S_TIMEZONE}</li>
+		</ul>
+
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+
+	<div class="copyright">Powered by <a href="http://www.phpbb.com/">phpBB</a>&reg; Forum Software &copy; phpBB Group
+		<br />CMS Powered by <a href="http://www.michaelcullum.com/cms">Unknown Bliss</a>&reg; CMS Software &copy; Michael Cullum
+		<!-- IF TRANSLATION_INFO --><br />{TRANSLATION_INFO}<!-- ENDIF -->
+		<!-- IF DEBUG_OUTPUT --><br />{DEBUG_OUTPUT}<!-- ENDIF -->
+		<!-- IF U_ACP --><br /><strong><a href="{U_ACP}">{L_ACP}</a></strong><!-- ENDIF -->
+	</div>
+</div>
+
+</div>
+
+<div>
+	<a id="bottom" name="bottom" accesskey="z"></a>
+	<!-- IF not S_IS_BOT -->{RUN_CRON_TASK}<!-- ENDIF -->
+</div>
+
+</body>
+</html>
