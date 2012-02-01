@@ -1,0 +1,76 @@
+<!-- INCLUDE cms_header.html -->
+
+<h2>{PAGE_TITLE}</h2>
+
+<!-- IF PAGE_CONTENT -->
+	<div class="content">
+		{PAGE_CONTENT}
+	</div>
+<!-- ENDIF -->
+
+<h2><a href="{U_VIEW_FORUM}">{L_NEWS_EVENTS}</a></h2>
+
+<div class="topic-actions">
+
+	<!-- IF not S_DISPLAY_SEARCHBOX -->
+		<div class="search-box">
+			<form method="post" id="topic-search" action="{S_SEARCHBOX_ACTION}">
+			<fieldset>
+				<input class="inputbox search tiny"  type="text" name="keywords" id="search_keywords" size="20" value="{L_SEARCH_NEWS}" onclick="if(this.value=='{LA_SEARCH_NEWS}')this.value='';" onblur="if(this.value=='')this.value='{LA_SEARCH_NEWS}';" />
+				<input class="button2" type="submit" value="{L_SEARCH}" />
+				{S_HIDDEN_FIELDS}
+				<input type="hidden" value="msgonly" name="sf" />
+			</fieldset>
+			</form>
+		</div>
+	<!-- ENDIF -->
+
+	<!-- IF PAGINATION or TOTAL_POSTS -->
+    <div class="pagination">
+        <a href="{U_VIEW_FORUM}">{L_VIEW_LIST}</a> &bull; {TOTAL_POSTS}
+        <!-- IF PAGE_NUMBER --><!-- IF PAGINATION --> &bull; <a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF --><!-- ENDIF -->
+    </div>
+<!-- ENDIF -->
+
+</div>
+<div class="clear"></div>
+
+<!-- BEGIN postrow -->
+<div class="search post <!-- IF postrow.S_ROW_COUNT is odd -->bg1<!-- ELSE -->bg2<!-- ENDIF --><!-- IF postrow.S_POST_REPORTED --> reported<!-- ENDIF -->">
+			<div class="inner"><span class="corners-top"><span></span></span>
+        
+		<div class="postbody" style="width: 100%;">
+			<h3><a href="{postrow.U_VIEW_TOPIC}">{postrow.TOPIC_TITLE}</a></h3>
+			<p class="author">{postrow.TOPIC_DATE}</p>
+			<div class="content">{postrow.TOPIC_TEXT}</div>
+           
+           	<!-- IF postrow.S_HAS_ATTACHMENTS -->
+				<dl class="attachbox">
+					<dt>{L_ATTACHMENTS}</dt>
+					<!-- BEGIN attachment -->
+						<dd>{postrow.attachment.DISPLAY_ATTACHMENT}</dd>
+					<!-- END attachment -->
+				</dl>
+			<!-- ENDIF -->
+		</div>
+
+		<ul class="searchresults">
+			<li><a href="{postrow.U_VIEW_TOPIC}" class="{S_CONTENT_FLOW_END}">{L_DISCUSS_TOPIC}</a></li>
+		</ul>
+
+			<span class="corners-bottom"><span></span></span></div>
+		</div>
+<!-- END postrow -->
+
+<div class="topic-actions">
+
+	<!-- IF PAGINATION or TOTAL_POSTS -->
+    <div class="pagination">
+        <a href="{U_VIEW_FORUM}">{L_VIEW_LIST}</a> &bull; {TOTAL_POSTS}
+        <!-- IF PAGE_NUMBER --><!-- IF PAGINATION --> &bull; <a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF --><!-- ENDIF -->
+    </div>
+<!-- ENDIF -->
+
+</div>
+
+<!-- INCLUDE cms_footer.html -->
