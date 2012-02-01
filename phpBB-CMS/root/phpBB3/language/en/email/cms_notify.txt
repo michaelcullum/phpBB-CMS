@@ -1,0 +1,10 @@
+Subject: Page edit notification - "{PAGE_TITLE}"
+
+Hello {USERNAME},
+
+You are receiving this notification because you are watching the page, "{PAGE_TITLE}". This page has been edited by "{EDIT_USERNAME}".
+
+If you want to view the page, click the following link:
+{U_PAGE}
+
+{EMAIL_SIG}
