@@ -1,0 +1,272 @@
+<!-- INCLUDE simple_header.html -->
+<script type="text/javascript" src="style/tiny_mce/tiny_mce_popup.js"></script>
+
+<div style="background-color: #fff; padding: 10px; margin-top: 10px;" class="permissions">
+
+<!-- IF U_BACK --><a href="{U_BACK}" style="float: {S_CONTENT_FLOW_END};">&laquo; {L_BACK}</a><!-- ENDIF -->
+
+<h3>{PAGE_TITLE}</h3>
+
+<br />
+
+<!-- IF S_ERROR -->
+	<div class="errorbox">
+		<h3>{L_WARNING}</h3>
+		<p>{ERROR_MSG}</p>
+	</div>
+<!-- ENDIF -->
+
+<script type="text/javascript">
+// <![CDATA[
+	function tinyMCE_insert(filename, html)
+	{
+		if(tinyMCEPopup.getWindowArg("input"))
+		{
+			FileBrowserDialogue.insert_upload(filename);
+		}
+		else
+		{
+			tinyMCEPopup.execCommand('mceInsertContent', true, html);
+		}
+		// close popup window
+		tinyMCEPopup.close();
+	}
+	
+	var FileBrowserDialogue = {
+		init : function ()
+		{
+		},
+		insert_upload : function (filename)
+		{
+		    var win = tinyMCEPopup.getWindowArg("window");
+		
+			// insert information now
+			win.document.getElementById(tinyMCEPopup.getWindowArg("input")).value = filename;
+
+			// are we an image browser
+			if (typeof(win.ImageDialog) != "undefined")
+			{
+				// we are, so update image dimensions and preview if necessary
+				if (win.ImageDialog.getImageData) win.ImageDialog.getImageData();
+				if (win.ImageDialog.showPreviewImage) win.ImageDialog.showPreviewImage(filename);
+			}
+		}
+	}
+
+	tinyMCEPopup.onInit.add(FileBrowserDialogue.init, FileBrowserDialogue);
+// ]]>
+</script>
+
+<!-- IF S_INSERT -->
+	<script type="text/javascript">
+    // <![CDATA[
+        onload = function()
+        {
+        	// Bit of a bodge to get javascript to create an array of hidden fields
+        	<!-- IF PAGE_ID -->
+        		tinyMCEPopup.getWin().document.getElementById('hidden').innerHTML += '<input type="hidden" name="update_ids[]" value="{PAGE_ID}" />';
+        	<!-- ENDIF -->
+        	
+			tinyMCE_insert('{A_FILENAME}', '{A_EMBED_HTML}');
+        }
+    // ]]>
+    </script>
+<!-- ELSEIF S_IMAGE_OPTIONS -->
+	<form id="upload" method="post" action="{U_ACTION}">
+
+	<fieldset>
+		<legend>{L_IMAGE_OPTIONS}</legend>
+		<dl>
+			<dt><label for="image_size">{L_IMAGE_SIZE}:</label></dt>
+			<dd>
+				<!-- IF S_SIZE_SMALL -->
+				<label><input name="image_size" type="radio" class="radio" id="image_size" value="{IMAGE_SIZE_SMALL}"<!-- IF IMAGE_SIZE == IMAGE_SIZE_SMALL --> checked="checked"<!-- ENDIF --> /> {L_IMAGE_SIZE_SMALL}</label><br />
+				<!-- ENDIF -->
+		
+				<!-- IF S_SIZE_MEDIUM -->
+				<label><input name="image_size" type="radio" class="radio" value="{IMAGE_SIZE_MEDIUM}"<!-- IF IMAGE_SIZE == IMAGE_SIZE_MEDIUM --> checked="checked"<!-- ENDIF --> /> {L_IMAGE_SIZE_MEDIUM}</label><br />
+				<!-- ENDIF -->
+		
+				<!-- IF S_SIZE_LARGE -->
+				<label><input name="image_size" type="radio" class="radio" value="{IMAGE_SIZE_LARGE}"<!-- IF IMAGE_SIZE == IMAGE_SIZE_LARGE --> checked="checked"<!-- ENDIF --> /> {L_IMAGE_SIZE_LARGE}</label><br />
+				<!-- ENDIF -->
+		
+				<label><input name="image_size" type="radio" class="radio" value="{IMAGE_SIZE_ORIGINAL}"<!-- IF IMAGE_SIZE == IMAGE_SIZE_ORIGINAL --> checked="checked"<!-- ENDIF --> /> {L_IMAGE_SIZE_ORIGINAL}</label>
+			</dd>
+		</dl>
+	</fieldset>
+
+	<fieldset class="submit-buttons">
+		<legend>{L_SUBMIT}</legend>
+		<input type="hidden" name="action" value="{ACTION}" />
+		<input type="hidden" name="p" value="{PAGE_ID}" />
+		<input type="hidden" name="uploaded" value="{UPLOADED}" />
+		<input class="button1" type="submit" id="submit" name="insert" value="{L_SUBMIT}" />&nbsp;
+		<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+		{S_FORM_TOKEN}
+	</fieldset>
+	</form>
+<!-- ELSEIF not S_UPLOAD -->
+	<table cellspacing="1">
+	<tbody>
+	<tr>
+		<td class="row3">{NAVIGATION}<!-- IF U_INSERT || A_FILENAME --> [<a href="{U_INSERT}"<!-- IF A_FILENAME --> onclick="tinyMCE_insert('{A_FILENAME}', '{A_EMBED_HTML}'); return false;"<!-- ENDIF -->>{L_INSERT}</a>]<!-- ENDIF --></td>
+	</tr>
+	</tbody>
+	</table>
+
+	<!-- IF .pages -->
+		<table cellspacing="1">
+			<col class="row1" /><col class="row1" /><col class="row2" /><col class="row2" />
+		<tbody>
+		<!-- BEGIN pages -->
+			<tr>
+				<td style="width: 5%; text-align: center;">{pages.PAGE_IMAGE}</td>
+				<td><!-- IF pages.HOME_PAGE -->{ICON_HOME} <!-- ENDIF --><a href="{pages.U_PAGE}">{pages.PAGE_TITLE}</a><!-- IF not pages.PAGE_DISPLAY --> <span class="small">[{L_HIDDEN_PAGE}]</span><!-- ENDIF --></td>
+				<td style="width: 15%; white-space: nowrap; text-align: center; vertical-align: middle;"><!-- IF pages.U_INSERT || pages.A_FILENAME --><a href="{pages.U_INSERT}"<!-- IF pages.A_FILENAME --> onclick="tinyMCE_insert('{pages.A_FILENAME}', '{pages.A_EMBED_HTML}'); return false;"<!-- ENDIF -->>{L_INSERT}</a><!-- ENDIF --></td>
+			</tr>
+		<!-- END pages -->
+		</tbody>
+		</table>
+	<!-- ENDIF -->
+	
+	<div class="clearfix">&nbsp;</div>
+	
+	<!-- IF PAGE_BOX -->
+	
+	<form id="pselect" method="post" action="{U_SEL_ACTION}">
+
+	<fieldset class="quick" style="float: {S_CONTENT_FLOW_BEGIN};">
+		{L_SELECT_PAGE}: <select name="parent_id" onchange="if(this.options[this.selectedIndex].value != -1){ this.form.submit(); }">{PAGE_BOX}</select>
+		<input type="hidden" name="action" value="{ACTION}" />
+		<input class="button2" type="submit" value="{L_GO}" />
+		{S_FORM_TOKEN}
+	</fieldset>
+	
+	</form>
+	
+	<!-- ENDIF -->
+	
+	<form id="page" method="post" action="{U_ACTION}">
+
+	<fieldset class="quick" style="float: {S_CONTENT_FLOW_END};">
+		<input type="hidden" name="action" value="{ACTION}" />
+		<input class="button2" name="upload" type="submit" value="{L_UPLOAD}" />
+	</fieldset>
+
+	</form>
+	
+	<div class="clearfix">&nbsp;</div>
+	
+<!-- ELSE -->
+	
+	<script type="text/javascript" src="style/cms.js"></script>
+	<script type="text/javascript">
+    // <![CDATA[
+		
+		var set_slug = false;
+		var space_separator = '{A_SPACE_SEPARATOR}';
+		
+		function display_url(value)
+		{
+			// Find the old select tag
+			var url = document.getElementById('page_url');
+			
+			<!-- BEGIN pages -->
+			if (value == '{pages.PAGE_ID}')
+			{
+				url.innerHTML = '{pages.A_URL}';
+			}<!-- END pages -->
+			
+
+			// select first item
+			item.options[0].selected = true;
+		}
+		
+		function display_upload_options(value)
+		{
+			if (value == '{UPLOAD_TYPE_FILE}')
+			{
+				dE('file_options', 1);
+				dE('url_options', -1);
+			}
+			else if (value == '{UPLOAD_TYPE_URL}')
+			{
+				dE('file_options', -1);
+				dE('url_options', 1);
+				
+				document.getElementById('upload_url').focus();
+			}
+		}
+        
+        /**
+        * Init the wanted display functionality if javascript is enabled.
+        * If javascript is not available, the user is still able to properly administrate.
+        */
+        onload = function()
+        {
+            display_upload_options({UPLOAD_TYPE});
+        }
+
+
+    // ]]>
+    </script>
+    
+    <form id="upload" method="post" action="{U_ACTION}" enctype="multipart/form-data">
+
+    <fieldset>
+        <legend>{L_UPLOAD}</legend>
+        <dl>
+            <dt><label for="page_title">{L_PAGE_TITLE}:</label></dt>
+            <dd><input name="page_title" type="text" class="text medium" id="page_title" value="{TITLE}" onchange="generate_slug(this.value);" onkeyup="generate_slug(this.value);" /></dd>
+        </dl>
+        <dl>
+            <dt><label for="page_slug">{L_PAGE_SLUG}:</label><br />
+            <span>{L_PAGE_SLUG_EXPLAIN}</span></dt>
+            <dd>{SITE_URL}<span id="page_url">{PARENT_URL}</span><input name="page_slug" type="text" class="text small" id="page_slug" value="{PAGE_SLUG}" onkeyup="set_slug = true;" /></dd>
+        </dl>
+        <dl>
+				<dt><label for="parent_id">{L_PARENT}:</label><br />
+				<span>{L_PARENT_EXPLAIN}</span></dt>
+				<dd><select name="parent_id" id="parent_id" onchange="display_url(this.value);">{S_PARENT_OPTIONS}</select></dd>
+		</dl>
+        <dl>
+            <dt><label for="upload_type">{L_UPLOAD_TYPE}:</label></dt>
+            <dd>
+                <label><input name="upload_type" type="radio" class="radio" id="upload_type" value="{UPLOAD_TYPE_FILE}" onchange="display_upload_options(this.value);"<!-- IF UPLOAD_TYPE == UPLOAD_TYPE_FILE --> checked="checked"<!-- ENDIF --> /> {L_UPLOAD_FILE}</label>
+                <label><input name="upload_type" type="radio" class="radio" value="{UPLOAD_TYPE_URL}" onchange="display_upload_options(this.value);"<!-- IF UPLOAD_TYPE == UPLOAD_TYPE_URL --> checked="checked"<!-- ENDIF --> /> {L_UPLOAD_URL}</label>
+            </dd>
+        </dl>
+        <div id="file_options">
+            <dl> 
+                <dt><label for="upload_file">{L_UPLOAD_FILE}:</label></dt>
+                <dd><input type="file" id="upload_file" name="upload_file" onchange="generate_slug(extract_filename(this.value));" /></dd>
+            </dl>
+        </div>
+        <div id="url_options">
+            <dl>
+                <dt><label for="upload_url">{L_UPLOAD_URL}:</label><br /><span>{L_UPLOAD_URL_EXPLAIN}</span></dt>
+                <dd><input name="upload_url" type="text" id="upload_url" value="{UPLOAD_URL}" onchange="generate_slug(extract_filename(this.value));" onkeyup="generate_slug(extract_filename(this.value));" /></dd>
+            </dl>
+        </div>
+        </fieldset>
+    
+    </fieldset>
+
+    <fieldset class="submit-buttons">
+        <legend>{L_SUBMIT}</legend>
+        <input type="hidden" name="action" value="{ACTION}" />
+        <input type="hidden" name="submit" value="1" />
+        <input class="button1" type="submit" id="submit" name="upload" value="{L_SUBMIT}" />&nbsp;
+        <input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+        {S_FORM_TOKEN}
+    </fieldset>
+    </form>
+
+<!-- ENDIF -->
+
+<br />
+
+</div>
+
+<!-- INCLUDE simple_footer.html -->
