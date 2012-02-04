@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml-stylesheet type="text/xsl" href="modx.prosilver.en.xsl"?>
+<!--NOTICE: Please open this file in your web browser. If presented with a security warning, you may safely tell it to allow the blocked content.-->
+<!--For security purposes, please check: http://www.phpbb.com/mods/ for the latest version of this MOD.\nAlthough MODs are checked before being allowed in the MODs Database there is no guarantee that there are no security problems within the MOD.\nNo support will be given for MODs not found within the MODs Database which can be found at http://www.phpbb.com/mods/-->
+<mod xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpbb.com/mods/xml/modx-1.2.5.xsd">
+	<header>
+		<meta name="generator" content="MODX file generated with PP MODX Creator by tumba25 (online version)"/>
+		<license><![CDATA[http://opensource.org/licenses/gpl-2.php GNU General Public License v2]]></license>
+		<title lang="en"><![CDATA[phpBB CMS]]></title>
+		<description lang="en"><![CDATA[phpbb CMS is a adds a fully functional, powerful CMS to your phpBB Installation.]]></description>
+		<author-notes lang="en"><![CDATA[This requires phpBB to be installed at a sub-directory (at any level) of the domain and the MOD will put the CMS one directory above the phpBB install
+		
+		phpBB CMS uses TinyMCE, a rich text editor, licensed under the LGPL (GNU Lesser General Public License v2.1, see additional files). It also uses third party code from MediaWiki (Javascript to toggle radio buttons when comparing versions) and the Inutio XML-RPC Library by Simon Willison for the XML-RPC Pingback client/server.]]></author-notes>
+		<author-group>
+			<author>
+				<realname><![CDATA[Michael Cullum]]></realname>
+				<username><![CDATA[Unknown Bliss]]></username>
+				<homepage><![CDATA[http://michaelcullum.com]]></homepage>
+				<email><![CDATA[phpbb@michaelcullum.com]]></email>
+				<contributions-group>
+					<contributions status="current" position="Lead Developer"/>
+				</contributions-group>
+			</author>
+			<author>
+				<realname><![CDATA[Pete Smith]]></realname>
+				<username><![CDATA[Peter_Smith]]></username>
+				<homepage><![CDATA[http://www.ptchaw.co.uk]]></homepage>
+				<email><![CDATA[pete@ptchaw.co.uk]]></email>
+				<contributions-group>
+					<contributions status="past" from="2010-06-06" to="2010-11-26" position="Previous Developer"/>
+				</contributions-group>
+			</author>
+			<author>
+				<realname><![CDATA[David King]]></realname>
+				<username><![CDATA[imkingdavid]]></username>
+				<homepage><![CDATA[http://www.thedavidking.com/.com]]></homepage>
+				<email><![CDATA[imkingdavid@gmail.com]]></email>
+				<contributions-group>
+					<contributions status="current" from="2012-02-01" position="Co-Developer"/>
+				</contributions-group>
+			</author>
+		</author-group>
+		<mod-version>0.0.1</mod-version>
+		<installation>
+			<level>easy</level>
+			<time>600</time>
+			<target-version>3.0.10</target-version>
+		</installation>
+		<link-group>
+			<link type="text" href="root/phpBB3/adm/style/tiny_mce/license.txt" lang="en">GNU Lesser General Public License v2.1 for TinyMCE</link>
+		</link-group>
+	</header>
+	<action-group>
+		<copy>
+			<file from="root/.htaccess" to="../.htaccess"/>
+			<file from="root/config.php" to="../config.php"/>
+			<file from="root/cron.php" to="../cron.php"/>
+			<file from="root/index.php" to="../index.php"/>
+			<file from="root/sitemap.php" to="../sitemap.php"/>
+			<file from="root/xmlrpc.php" to="../xmlrpc.php"/>
+			<file from="root/phpBB3/*.*" to="*.*"/>
+		</copy>
+		<open src="adm/style/simple_footer.html">
+			<edit>
+				<find><![CDATA[		<div style="text-align: {S_CONTENT_FLOW_END};"><a href="#" onclick="self.close(); return false;">{L_CLOSE_WINDOW}</a></div>]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[self.close();]]></inline-find>
+					<inline-action type="replace-with"><![CDATA[<!-- IF S_TINYMCE -->tinyMCEPopup.close();<!-- ELSE -->self.close();<!-- ENDIF -->]]></inline-action>
+				</inline-edit>
+			</edit>
+		</open>
+		<open src="styles/prosilver/template/overall_header.html">
+			<edit>
+				<find><![CDATA[<title>{SITENAME} &bull; <!-- IF S_IN_MCP -->{L_MCP} &bull; <!-- ELSEIF S_IN_UCP -->{L_UCP} &bull; <!-- ENDIF -->{PAGE_TITLE}</title>]]></find>
+				<action type="after-add"><![CDATA[<!-- IF U_PRINT_PAGE or U_PRINT_TOPIC or U_PRINT_PM -->
+	<link rel="alternate" href="<!-- IF U_PRINT_TOPIC -->{U_PRINT}<!-- ELSEIF U_PRINT_PM -->{U_PRINT_PM}<!-- ELSE -->{U_PRINT_PAGE}<!-- ENDIF -->" media="print">
+<!-- ENDIF -->
+<!-- IF U_START --><link rel="start" href="{U_START}"><!-- ENDIF -->
+<!-- IF NEXT_PAGE --><link rel="next" href="{NEXT_PAGE}"><!-- ENDIF -->
+<!-- IF PREVIOUS_PAGE --><link rel="prev" href="{PREVIOUS_PAGE}"><!-- ENDIF -->
+<!-- IF U_CANONICAL --><link rel="canonical" href="{U_CANONICAL}" /><!-- ENDIF -->
+<!-- IF U_PINGBACK --><link rel="pingback" href="{U_PINGBACK}" /><!-- ENDIF -->
+
+<!-- IF U_TRACKBACK -->
+	<!--
+		<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+		<rdf:Description
+			dc:title="{PAGE_TITLE}"
+			dc:identifier="{U_PAGE}"
+			trackback:ping="{U_TRACKBACK}" />
+		</rdf:RDF>
+	-->
+<!-- ENDIF -->]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[				<a href="{U_INDEX}" title="{L_INDEX}" id="logo">{SITE_LOGO_IMG}</a>]]></find>
+				<action type="replace-with"><![CDATA[				<a href="{U_SITE_INDEX}" title="{L_SITE_INDEX}" id="logo">{SITE_LOGO_IMG}</a>]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[				<li class="icon-home"><a href="{U_INDEX}" accesskey="h">{L_INDEX}</a> <!-- BEGIN navlinks --> <strong>&#8249;</strong> <a href="{navlinks.U_VIEW_FORUM}">{navlinks.FORUM_NAME}</a><!-- END navlinks --></li>]]></find>
+				<action type="replace-with"><![CDATA[				<li class="icon-home"><!-- BEGIN nav --><a href="{nav.U_PAGE}"<!-- IF nav.S_FIRST_ROW --> accesskey="h"<!-- ENDIF -->>{nav.PAGE_TITLE}</a><!-- IF not nav.S_LAST_ROW --> &bull; <!-- ENDIF --><!-- END nav --> <!-- IF not S_IN_CMS --><!-- BEGIN navlinks --> <strong>&#8249;</strong> <a href="{navlinks.U_VIEW_FORUM}">{navlinks.FORUM_NAME}</a><!-- END navlinks --><!-- ENDIF --></li>]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[	<div id="page-body">]]></find>
+				<action type="after-add"><![CDATA[		<!-- IF S_IN_CMS -->
+			<!-- BEGIN navlinks -->
+				<!-- IF navlinks.S_FIRST_ROW --><p><em><!-- ENDIF -->
+				<a href="{navlinks.U_PAGE}"<!-- IF navlinks.S_FIRST_ROW --> accesskey="h"<!-- ENDIF -->>{navlinks.PAGE_TITLE}</a>
+				<!-- IF not navlinks.S_LAST_ROW --> &#8249; <!-- ELSE --></em></p><!-- ENDIF -->
+			<!-- END navlinks -->
+		<!-- ENDIF -->
+		]]></action>
+			</edit>
+		</open>
+		<php-installer><![CDATA[install_cms/index.php]]></php-installer>
+		<diy-instructions lang="en"><![CDATA[Remove or rename the install directory.]]></diy-instructions>
+	</action-group>
+</mod>
