@@ -1,0 +1,40 @@
+<!-- INCLUDE cms_header.html -->
+
+<h2>{PAGE_TITLE}</h2>
+
+<!-- IF BREAK_PAGINATION -->
+	<ul class="linklist">
+		<li class="rightside pagination"><a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{BREAK_PAGE_NUMBER}</a> &bull; <span>{BREAK_PAGINATION}</span></li>
+	</ul>
+<!-- ENDIF -->
+
+<!-- IF CONTENTS_TABLE -->
+	<div class="post bg3">
+		<div class="inner">
+			<span class="corners-top"><span></span></span>
+			<div class="content">
+				{CONTENTS_TABLE}
+			</div>
+			<span class="corners-bottom"><span></span></span>
+		</div>
+	</div>
+	<hr />
+<!-- ENDIF -->
+
+<div class="post bg1">
+	<div class="inner">
+		<span class="corners-top"><span></span></span>
+		<div class="content">
+			{PAGE_CONTENT}
+		</div>
+		<span class="corners-bottom"><span></span></span>
+	</div>
+</div>
+
+<!-- IF BREAK_PAGINATION -->
+	<ul class="linklist">
+		<li class="rightside pagination"><a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{BREAK_PAGE_NUMBER}</a> &bull; <span>{BREAK_PAGINATION}</span></li>
+	</ul>
+<!-- ENDIF -->
+
+<!-- INCLUDE cms_footer.html -->
