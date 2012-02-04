@@ -1,0 +1,19 @@
+<!-- IF S_DISPLAY_JUMPBOX -->
+	<form method="get" id="jumpbox" action="{S_JUMPBOX_ACTION}" onsubmit="if(document.jumpbox.f.value == ''){return false;}">
+
+	<!-- IF $CUSTOM_FIELDSET_CLASS -->
+		<fieldset class="{$CUSTOM_FIELDSET_CLASS}">
+	<!-- ELSE -->
+		<fieldset class="jumpbox">
+	<!-- ENDIF -->
+			<label for="p" accesskey="j">{L_JUMP_TO}:</label>
+			<select name="p" id="p" onchange="if(this.options[this.selectedIndex].value != ''){ <!-- IF S_MOD_REWRITE -->location.href=this.options[this.selectedIndex].title<!-- ELSE -->document.forms['jumpbox'].submit()<!-- ENDIF --> }">
+			<!-- BEGIN jumpbox_pages -->
+				<!-- IF jumpbox_pages.S_PAGE_COUNT == 1 --><option value="">------------------</option><!-- ENDIF -->
+				<option value="{jumpbox_pages.PAGE_URL}"<!-- IF S_MOD_REWRITE --> title="{jumpbox_pages.U_PAGE}"<!-- ENDIF -->{jumpbox_pages.SELECTED}><!-- BEGIN level -->&nbsp; &nbsp;<!-- END level -->{jumpbox_pages.PAGE_TITLE}</option>
+			<!-- END jumpbox_pages -->
+			</select>
+			<input type="submit" value="{L_GO}" class="button2" />
+		</fieldset>
+	</form>
+<!-- ENDIF -->
