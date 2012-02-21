@@ -26,6 +26,32 @@ class acp_cms_main
 	{
 		global $config, $db, $user, $auth, $template, $cms_root_path, $phpbb_root_path, $phpbb_admin_path, $phpEx;
 
+		
+				// MOD Version -- Change when the MOD gets updated
+				define('MOD_VERSION', '0.0.1');
+				$info = $this->obtain_latest_mod_version_info();
+				$info = explode("\n", $info);
+				$modversion = trim($info[0]);
+				if(!$modversion)
+				{
+					$version_message = sprintf($user->lang['SERVER_DOWN'], '<a href="' . $info[1] . '">', '</a>');
+					$s_up_to_date = 0;
+				}
+				else
+				{
+					$s_up_to_date = (version_compare(MOD_VERSION, $modversion, '>=') == 1) ? 1 : 0;
+					$version_message = ($s_up_to_date == 1) ? $user->lang['UP_TO_DATE'] : $user->lang['NOT_UP_TO_DATE'];
+				}
+				$template->assign_vars(array(
+					'CURRENT_VERSION'	=> MOD_VERSION,
+					'LATEST_VERSION'	=> $modversion,
+					'VERSION_MESSAGE'	=> $version_message,
+					'S_UP_TO_DATE'		=> $s_up_to_date,
+					'UPDATE_TO'			=> sprintf($user->lang['UPDATE_TO'], $modversion),
+					'S_VERSION_CHECK'	=> true,
+					'U_DLUPDATE'		=> trim($info[1]),
+				));
+				
 		$action = request_var('action', '');
 		
 		$version_type_options = array(
@@ -523,5 +549,21 @@ function view_cms_log($mode, &$log, &$log_count, $limit = 0, $offset = 0, $page_
 	$db->sql_freeresult($result);
 
 	return;
+	
+	function obtain_latest_mod_version_info()
+	{
+		$errstr = '';
+		$errno = 0;
+
+		$info = get_remote_file('www.michaelcullum.com', '/modver',
+				'cms.txt', $errstr, $errno);
+	
+		if ($info === false)
+		{
+			return false;
+		}
+	
+		return $info;
+	}
 }
 ?>
