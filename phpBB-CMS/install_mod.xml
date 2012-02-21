@@ -113,6 +113,5 @@
 			</edit>
 		</open>
 		<php-installer><![CDATA[install_cms/index.php]]></php-installer>
-		<diy-instructions lang="en"><![CDATA[Remove or rename the install directory.]]></diy-instructions>
 	</action-group>
 </mod>
